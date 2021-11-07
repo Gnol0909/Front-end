@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Domestic Tour</title>
+    <link rel="icon" href="https://cloud.mongodb.com/static/images/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="/css/app.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400&display=swap" rel="stylesheet">
+
+    {{!-- apexcharts --}}
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Public Sans', sans-serif;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!--  -->
+    <script defer src="/@fortawesome/fontawesome-free/js/brands.js"></script>
+    <script defer src="/@fortawesome/fontawesome-free/js/solid.js"></script>
+    <script defer src="/@fortawesome/fontawesome-free/js/fontawesome.js"></script>
+</head>
+
+<body>
+    <div class="header">
+        <div class="header__item">
+            <div class="header__img">
+                <img src="/img/logo.png" alt="" class="header__img-pic">
+            </div>
+            <div class="header__maneger">
+                <div class="header__maneger-img">
+                    <img src="/img/avt.jpg" alt="" class="header__maneger-img-pic">
+                </div>
+                <div class="header__maneger-info">
+                    <h3 class="header__maneger-info-name">Maneger</h3>
+                    <span class="header__maneger-info-email">admin123@gmail.com</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div id="layout-left-container">
+            <div class="container-item-list">
+                <div class="container-item-tag ">
+                    <div class="container-item-tag-icons">
+                    <i class="fas fa-tachometer-alt container-item-tag-icon"></i>
+                    </div>
+                    <span>
+                        <a href="/dashboard" class="container-item-tag-header">Dashboard</a>
+                    </span>
+                </div>
+                <div class="container-item-tag ">
+                    <div class="container-item-tag-icons">
+                    <i class="fas fa-user container-item-tag-icon"></i>
+                    </div>
+                    <span>
+                        <a href="/staffs" class="container-item-tag-header">Staffs</a>
+                    </span>
+                </div>
+                <div class="container-item-tag ">
+                    <div class="container-item-tag-icons">
+                    <i class="fas fa-users container-item-tag-icon"></i>
+                    </div>
+                    <span>
+                        <a href="/customers" class="container-item-tag-header">Tourist Groups</a>
+                    </span>
+                </div>
+                <div class="container-item-tag ">
+                    <div class="container-item-tag-icons">
+                    <i class="fas fa-torii-gate container-item-tag-icon"></i>
+                    </div>
+                    <span>
+                        <a href="/tours" class="container-item-tag-header">Tours</a>
+                    </span>
+                </div>
+                <div class="container-item-tag ">
+                    <div class="container-item-tag-icons">
+                    <i class="fas fa-chart-pie container-item-tag-icon"></i>
+                    </div>
+                    <span>
+                        <a href="/statistics" class="container-item-tag-header">Statistics</a>
+                    </span>
+                </div>
+            </div>
+            <div class="container__img">
+                <img src="/img/pic.png" alt="" class="container__img-pic">
+            </div>
+        </div>
+        <!--layout  right -->
+        <div style="padding-left: 280px;" id="divMain">
+            {{{body}}}
+        </div>
+    </div>
+
+</body>
+<script>
+    $('.div-grid-page-right').on('click', function (e) {
+        $('.div-grid-page-right').removeClass('active')
+        $(this).addClass('active')
+        if ($(this).index() == 1) {
+            $('.content-right-grid-page-right').css('display', 'block')
+            $('.content-left-grid-page-right').css('display', 'none')
+        }
+        else if ($(this).index() == 0) {
+            $('.content-right-grid-page-right').css('display', 'none')
+            $('.content-left-grid-page-right').css('display', 'block')
+        }
+    })
+    let pathname = window.location.pathname;
+    console.log(pathname)
+    if (pathname == "/") {
+        $('#layout-left-container').css('display', 'none')
+        $('#divMain').css('padding-left', '0px')
+    }
+    else {
+        $('#layout-left-container').css('display', 'flex')
+        $('#divMain').css('padding-left', '280px')
+    }
+</script>
+
+</html>

@@ -1,0 +1,145 @@
+<link rel="stylesheet" href="/css/Customers.css">
+<form id="form-change-NgayKhoiHanh">
+    <input hidden type="text" name="MaDoan" id="input-form-change-NgayKhoiHanh-MaDoan" value="">
+    <input hidden type="text" name="NgayKhoiHanh" id="input-form-change-NgayKhoiHanh-NgayKhoiHanh" value="">
+</form>
+<form action="/handle/finishDoanDuLich" method="POST" id="form-finish-doandulich">
+    <input hidden type="text" name="MaDoan" id="input-form-finishDoanDuLich-MaDoan">
+</form>
+<div class="customer__header">
+    <div class="customer__search">
+        <div class="customer__search-icon">
+        <i class="fas fa-search"></i>
+        </div>
+        <input type="text" class="customer__search-input" placeholder="Search...">
+    </div>
+    <div class="customer__add">
+        <a href="" id="button-add-new-doandulich">
+        <div class="customer__add-btn">
+            <i class="customer__add-icon fas fa-plus"></i>
+        </div>
+        </a>
+    </div>
+</div>
+<div class="customer__container">
+    <div>
+        <div class="customer__container-header">
+            <h3 class="customer__container-name">Thông tin các đoàn du lịch </h3>
+            <select class="customer__container-select" name="" id="information-doandulich">
+                <option value="all">All</option>
+                <option value="active">Active</option>
+                <option value="finished">Finished</option>
+            </select>
+            {{!-- <button id="button-add-new-doandulich">Thêm 1 đoàn mới</button> --}}
+        </div>
+        {{!-- table đoàn du lịch --}}
+        <div>
+            <table>
+                <tr>
+                    <th>Mã Tour</th>
+                    <th>Mã Đoàn</th>
+                    <th>Tên đoàn du lịch</th>
+                    <th>Ngày khởi hành(mm/dd/yyyy)</th>
+                    <th>Thành viên</th>
+                    <th>Tổng tiền</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                {{#each doandulichs}}
+                <tr class="row-doandulich">
+                    <td hidden class="row-check-finish-doandulich">{{this.CheckFinish}}</td>
+                    <td>{{this.MaTour}}</td>
+                    <td>{{this.MaDoan}}</td>
+                    <td>{{this.TenDoan}}</td>
+                    <td>{{this.NgayKhoiHanh}}</td>
+                    <td>{{this.SoLuongThanhVien}}</td>
+                    <td>{{this.ChiPhi}}</td>
+                    <td class="td-checkfinish-doandulich">
+                        <span class="span-checkfinish-doandulich "></span>
+                    </td>
+                    <td>
+                        <div class="container-icon-extend-option">
+                            <div class="icon-extend-option">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </div>  
+                        </div>
+                        <div class="menu-icon-extend-option">
+                            <div class="item-option-icon-extend-option">
+                                <table style="margin: 0;">
+                                    <tr style="background-color: transparent;">
+                                        <td>
+                                            <i class="fas fa-edit"></i>
+                                        </td>
+                                        <td class="btn-edit-doandulich">Sửa</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="item-option-icon-extend-option">
+                                <table style="margin: 0;">
+                                    <tr style="background-color: transparent;">
+                                        <td>
+                                            <i class="fas fa-flag-checkered"></i>
+                                        </td>
+                                        <td class="btn-finish-doandulich">Hoàn thành</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                {{/each}}
+            </table>    
+        </div>
+        <div class="customer__container-header">
+            <h3 class="customer__container-name">Thông tin các khách hàng trong đoàn</h3>
+            <select class="customer__container-select" name="" id="information-khachhang">
+                <option value="All">All</option>
+                {{#each doandulichs}}
+                <option value="{{this.MaDoan}}">{{this.MaDoan}}</option>
+                {{/each}}
+            </select>
+        </div>
+        {{!-- table khách du lịch --}}
+        <div>
+            <table>
+                <tr>
+                    <th>Họ tên </th>
+                    <th hidden>Mã khách hàng</th>
+                    <th>CMND</th>
+                    <th>Giới tính</th>
+                    <th>Số điện thoại</th>
+                    <th>Mã đoàn</th>
+                    <th></th>
+                </tr>
+                {{#each khachhangs}}
+                <tr class="row-khachhang">
+                    <td>{{this.HoTen}}</td>
+                    <td hidden>{{this.MaKhachHang}}</td>
+                    <td>{{this.CMND}}</td>
+                    <td>{{this.GioiTinh}}</td>
+                    <td>{{this.SDT}}</td>
+                    <td>{{this.MaDoan}}</td>
+                    <td>
+                        <div class="container-icon-extend-option">
+                            <div class="icon-extend-option">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </div>
+                        </div>
+                        {{!-- <div class="menu-icon-extend-option">
+                            <p class="item-option-icon-extend-option">Sửa</p>
+                            <p class="item-option-icon-extend-option"> Xóa</p>
+                        </div> --}}
+                    </td>
+                </tr>
+                {{/each}}
+            </table>
+        </div>
+    </div>
+</div>
+{{!-- những đoạn code liên quan đến page này thì code ở link dưới nó nằm trong thư mục public --}}
+<script src="util/customers.js"></script>
+
+<script>
+    $('.container-item-tag').removeClass('active')
+    $('.container-item-tag').eq(2).addClass('active')
+</script>
