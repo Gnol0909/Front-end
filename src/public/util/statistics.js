@@ -1,4 +1,4 @@
-// table tours
+  // table tours
 let indexStatisticTours = $('.statistic-tableTours-MaTour').length
 let inputTableToursMaTour = []
 let inputTableToursChiPhi = []
@@ -23,20 +23,30 @@ for (let i = 0; i < indexStatisticNhanVien; ++i) {
 var optionsTour = {
     series: [{
         name: 'Số đoàn đã đi',
-        type: 'column',
+        // type: 'column',
         data: inputTableToursCount
     }, {
         name: 'Chi phí',
-        type: 'line',
+        // type: 'line',
         data: inputTableToursChiPhi
     }],
     chart: {
         height: 350,
-        type: 'line',
+        type: 'area',
     },
     stroke: {
-        width: [0, 2]
+        width: [0, 2],
+        curve: 'smooth',
     },
+    fill: {
+        type: "gradient",
+        gradient: {
+          shadeIntensity: 1,
+          opacityFrom: 0.7,
+          opacityTo: 0.9,
+          stops: [0, 90, 100]
+        }
+      },
     // title: {
     //     text: 'Traffic Sources'
     // },
