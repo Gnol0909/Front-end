@@ -9,6 +9,7 @@
     background-color: rgba(0, 0, 0, 0.2);
     display: flex;
     justify-content: center;
+    align-items: center;
     transform: translateY(-100%);
     transition: transform linear 0.3s;
 }
@@ -16,7 +17,7 @@
 .container-add-new-item {
     border: 1px solid transparent;
     background-color: white;
-    border-radius: 20px;
+    /* border-radius: 20px; */
     margin-top: 50px;
     width: 800px;
     height: 500px;
