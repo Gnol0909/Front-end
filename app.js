@@ -15,7 +15,12 @@ console.log(__dirname)
 app.engine('hbs', handlebars({
     extname: '.hbs',
     helpers: {
-        sumIndex: (a, b) => (a + b)
+        sumIndex: (a, b) => (a + b),
+        formatLengthText: (text)=>{
+            if(text.length >50)
+                return text.slice(0,50)+" ..."
+            return text
+        }
     }
 }
 ));

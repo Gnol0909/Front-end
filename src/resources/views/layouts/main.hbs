@@ -45,7 +45,7 @@
                 </div>
                 <div class="header__maneger-info">
                     <h3 class="header__maneger-info-name">Manager</h3>
-                    <span class="header__maneger-info-email">admin123@gmail.com</span>
+                    <span class="header__maneger-info-email">admin@gmail.com</span>
                 </div>
             </div>
         </div>
@@ -123,10 +123,15 @@
     if (pathname == "/") {
         $('#layout-left-container').css('display', 'none')
         $('#divMain').css('padding-left', '0px')
+        $('.header').css('display', 'none')
+        $('.container').css('margin-top', '0')
     }
     else {
         $('#layout-left-container').css('display', 'flex')
         $('#divMain').css('padding-left', '280px')
+
+        $('.header').css('display', 'block')
+        $('.container').css('margin-top', '50px')
     }
 </script>
 

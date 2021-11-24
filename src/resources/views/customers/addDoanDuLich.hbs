@@ -9,10 +9,11 @@
 </div>
 <div class="addtg__container">
     {{!-- <a href="/customers">Back(nhấn vào để lui lại)</a> --}}
-    <form action="/handle/addDoanDuLich" method="POST">
+    <form action="/handle/addDoanDuLich" method="POST" id="form-addDoanDuLich">
         <input type="text" name="totalNhanViens[]" id="input-list-nhanvientour" hidden>
         <input type="text" name="CheckFinish" id="" value="false" hidden>
-        <input type="text" name="SoThuTuDiaDiem" id="" value="0" hidden>
+        <input type="text" name="PhuongTien" id="input-phuongtien" value="" hidden>
+        <input type="text" name="SoThuTuDiaDiem" id="" value="1" hidden>
         <input type="text" value="1240000" name="ChiPhi" id="input-ChiPhi-real" hidden>
         <div class="addtg__container-info">
             <label class="addtg__container-label" for="">Mã đoàn</label>
@@ -20,7 +21,7 @@
         </div>
         <h4 class="addtg__container-header">Nhập thông tin đoàn du lịch</h4>
         <div>
-            <div class="addtg__container-tourist-info" >
+            <div class="addtg__container-tourist-info">
                 <div class="addtg__container-info">
                     <label class="addtg__container-label" for="">Tên đoàn</label>
                     <input class="addtg__container-input" type="text" name="TenDoan" id="">
@@ -32,14 +33,14 @@
                 <input type="text" name="NgayKhoiHanh" id="input-real-date-NgayKhoiHanh" hidden>
             </div>
             <div>
-                 <div class="addtg__container-info">
-                <label class="addtg__container-label" for="">Chọn tour muốn đi</label>
-                <select class="addtg__container-select" name="MaTour" id="">
-                    {{#each tours}}
-                    <option value="{{this.MaTour}}">{{this.TenTour}}</option>
-                    {{/each}}
-                </select>
-                 </div>
+                <div class="addtg__container-info">
+                    <label class="addtg__container-label" for="">Chọn tour muốn đi</label>
+                    <select class="addtg__container-select" name="MaTour" id="">
+                        {{#each tours}}
+                        <option value="{{this.MaTour}}">{{this.TenTour}}</option>
+                        {{/each}}
+                    </select>
+                </div>
             </div>
         </div>
         {{!-- Nhập thông tin hành khách trong đoàn --}}
@@ -51,9 +52,9 @@
             <div class="item-add-new-khachhang">
                 <div class="item-add-new-line">
                     <span class="item-add-new-tourist">Khách hàng 1</span>
-                    {{!-- <div class="delete-new-khachhang" style="cursor: pointer;">
+                    {{!-- <span class="delete-new-khachhang" style="cursor: pointer;">
                         <i class="fas fa-trash-alt"></i>
-                    </div> --}}
+                    </span> --}}
                 </div>
                 <div>
                     <div class="addtg__container-info">
@@ -62,29 +63,37 @@
                     </div>
                     <div class="addtg__container-info">
                         <label class="addtg__container-label" for="">CMND/CC:</label>
-                        <input class="addtg__container-input"t type="text" name="1-CMND" id="">
+                        <input class="addtg__container-input" t type="text" name="1-CMND" id="">
                     </div>
                     <div class="addtg__container-info">
-                    <label  class="addtg__container-label"for="">Giới tính:</label>
-                    <select class="addtg__container-select" name="1-GioiTinh" id="">
-                        <option value="Nam">Nam</option>
-                        <option value="Nữ">Nữ</option>
-                    </select>
+                        <label class="addtg__container-label" for="">Giới tính:</label>
+                        <select class="addtg__container-select" name="1-GioiTinh" id="">
+                            <option value="Nam">Nam</option>
+                            <option value="Nữ">Nữ</option>
+                        </select>
                     </div>
                     <div class="addtg__container-info">
-                        <labe class="addtg__container-label" for="">Số điện thoại:</labe>
+                        <label class="addtg__container-label" for="">Số điện thoại:</label>
                         <input class="addtg__container-input" type="text" name="1-SDT" id="">
                     </div>
                 </div>
             </div>
         </div>
         <div class="addtg__container-info">
-            <span class="addtg__container-label">Tổng Chi phí :</span>
+            <label class="addtg__container-label" for="">Phương tiện:</label>
+            <select class="addtg__container-select" name="PhuongTien" id="select-phuongtien" disabled >
+                {{#each phuongtiens}}
+                <option value="{{this.MaPhuongTien}}" data-max="{{this.ToiDa}}">{{this.TenPhuongTien}}</option>
+                {{/each}}
+            </select>
+        </div>
+        <div class="addtg__container-info">
+            <span class="addtg__container-label" id="total-money">Tổng Chi phí :</span>
             <input class="addtg__container-input" type="text" value="1240000" readonly id="input-ChiPhi"
                 style="border: transparent;outline:none;cursor:pointer">
         </div>
         <div class="addtg__container-btn">
-            <button>LƯU THÔNG TIN</button>
+            <button id="submit-add-doandulich">LƯU THÔNG TIN</button>
         </div>
     </form>
     <div>
@@ -101,7 +110,7 @@
                 {{#each nhanviens}}
                 <tr class="tr-nhanvientour">
                     <td>
-                        <input type="checkbox" name="" id="" class="input-checkbox-nhanviens" >
+                        <input type="checkbox" name="" id="" class="input-checkbox-nhanviens">
                     </td>
                     <td>{{this.MaNhanVien}}</td>
                     <td>{{this.TenNhanVien}}</td>

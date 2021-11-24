@@ -8,7 +8,7 @@
     width: 100%;
     object-fit: cover;
 }
-.login-background form{
+.signin{
     top: 0;
     left: 0;
     right: 0;
@@ -62,4 +62,9 @@
 }
 .forgot-password:hover{
     color: #00AB55;
+}
+#container-capcha{
+    font-size: 10px;
+    color: #00AB55;
+    margin-top: 10px;
 }

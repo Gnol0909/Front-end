@@ -1,23 +1,27 @@
 <link rel="stylesheet" href="/css/Customers.css">
-<form id="form-change-NgayKhoiHanh">
-    <input hidden type="text" name="MaDoan" id="input-form-change-NgayKhoiHanh-MaDoan" value="">
-    <input hidden type="text" name="NgayKhoiHanh" id="input-form-change-NgayKhoiHanh-NgayKhoiHanh" value="">
+<form hidden id="form-change-NgayKhoiHanh">
+    <input  type="text" name="MaDoan" id="input-form-change-NgayKhoiHanh-MaDoan" value="">
+    <input  type="text" name="NgayKhoiHanh" id="input-form-change-NgayKhoiHanh-NgayKhoiHanh" value="">
 </form>
-<form action="/handle/finishDoanDuLich" method="POST" id="form-finish-doandulich">
-    <input hidden type="text" name="MaDoan" id="input-form-finishDoanDuLich-MaDoan">
+<form hidden action="/handle/finishDoanDuLich" method="POST" id="form-finish-doandulich">
+    <input  type="text" name="MaDoan" id="input-form-finishDoanDuLich-MaDoan">
+</form>
+<form hidden action="/handle/increateSoThuTuDiaDiemOfDoanDuLich" method="POST" id="form-increateSoThuTuDiaDiem-doandulich">
+    <input  type="text" name="SoThuTuDiaDiem" id="input-form-increateSoThuTuDiaDiemOfDoanDuLich-SoThuTuDiaDiem">
+    <input  type="text" name="MaDoan" id="input-form-increateSoThuTuDiaDiemOfDoanDuLich-MaDoan">
 </form>
 <div class="customer__header">
     <div class="customer__search">
         <div class="customer__search-icon">
-        <i class="fas fa-search"></i>
+            <i class="fas fa-search"></i>
         </div>
         <input type="text" class="customer__search-input" placeholder="Search...">
     </div>
     <div class="customer__add">
         <a href="" id="button-add-new-doandulich">
-        <div class="customer__add-btn">
-            <i class="customer__add-icon fas fa-plus"></i>
-        </div>
+            <div class="customer__add-btn">
+                <i class="customer__add-icon fas fa-plus"></i>
+            </div>
         </a>
     </div>
 </div>
@@ -39,7 +43,7 @@
                     <th>Mã Tour</th>
                     <th>Mã Đoàn</th>
                     <th>Tên đoàn du lịch</th>
-                    <th>Ngày khởi hành(mm/dd/yyyy)</th>
+                    <th>Ngày khởi hành(m/d/y)</th>
                     <th>Thành viên</th>
                     <th>Tổng tiền</th>
                     <th></th>
@@ -58,10 +62,10 @@
                         <span class="span-checkfinish-doandulich "></span>
                     </td>
                     <td>
-                        <div class="container-icon-extend-option">
+                        <div class="container-icon-extend-option tourist-groups">
                             <div class="icon-extend-option">
                                 <i class="fas fa-ellipsis-v"></i>
-                            </div>  
+                            </div>
                         </div>
                         <div class="menu-icon-extend-option">
                             <div class="item-option-icon-extend-option">
@@ -70,7 +74,7 @@
                                         <td>
                                             <i class="fas fa-edit"></i>
                                         </td>
-                                        <td class="btn-edit-doandulich">Sửa</td>
+                                        <td class="btn-edit-doandulich tourist-groups">Sửa</td>
                                     </tr>
                                 </table>
                             </div>
@@ -80,7 +84,7 @@
                                         <td>
                                             <i class="fas fa-flag-checkered"></i>
                                         </td>
-                                        <td class="btn-finish-doandulich">Hoàn thành</td>
+                                        <td class="btn-finish-doandulich tourist-groups">Hoàn thành</td>
                                     </tr>
                                 </table>
                             </div>
@@ -88,8 +92,63 @@
                     </td>
                 </tr>
                 {{/each}}
-            </table>    
+            </table>
         </div>
+        {{!-- table dia diem hien tai moi doan --}}
+        <div class="customer__container-header">
+            <h3 class="customer__container-name">Thông tin địa điểm hiện tại của các đoàn du lịch</h3>
+        </div>
+        <div>
+            <table>
+                <tr>
+                    <th>Mã đoàn</th>
+                    <th>Mã tour</th>
+                    <th>Tên đoàn du lịch</th>
+                    <th>Địa điểm hiện tại</th>
+                    <th>Hoàn thành</th>
+                    <th></th>
+                </tr>
+                {{#each destination}}
+                <tr class="row-destination">
+                    <td class="MaDoan-destination">{{this.MaDoan}}</td>
+                    <td>{{this.MaTour}}</td>
+                    <td>{{this.TenDoan}}</td>
+                    <td title="{{this.DiaDiem}}">{{formatLengthText this.DiaDiem}}</td>
+                    <td class="DiaDiem-totalDiaDiem">{{this.SoThuTuDiaDiem}}/{{this.TongDiaDiem}}</td>
+                    <td>
+                        <div class="container-icon-extend-option destination">
+                            <div class="icon-extend-option">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </div>
+                        </div>
+                        <div class="menu-icon-extend-option">
+                            <div class="item-option-icon-extend-option">
+                                <table style="margin: 0;">
+                                    <tr style="background-color: transparent;">
+                                        <td>
+                                            <i class="fas fa-edit"></i>
+                                        </td>
+                                        <td class="btn-edit-destination">Cập nhập địa điểm</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="item-option-icon-extend-option">
+                                <table style="margin: 0;">
+                                    <tr style="background-color: transparent;">
+                                        <td>
+                                            <i class="fas fa-flag-checkered"></i>
+                                        </td>
+                                        <td class="btn-finish-destination">Hoàn thành</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                {{/each}}
+            </table>
+        </div>
+        {{!-- table khach hang trong doan --}}
         <div class="customer__container-header">
             <h3 class="customer__container-name">Thông tin các khách hàng trong đoàn</h3>
             <select class="customer__container-select" name="" id="information-khachhang">
@@ -129,6 +188,35 @@
                             <p class="item-option-icon-extend-option">Sửa</p>
                             <p class="item-option-icon-extend-option"> Xóa</p>
                         </div> --}}
+                    </td>
+                </tr>
+                {{/each}}
+            </table>
+        </div>
+        {{!-- header phuong tien di chuyen --}}
+        <div class="customer__container-header">
+            <h3 class="customer__container-name">Thông tin phương tiện di chuyển của các đoàn du lịch</h3>
+        </div>
+        {{!-- table phuong tien--}}
+        <div>
+            <table>
+                <tr>
+                    <th>Mã đoàn</th>
+                    <th>Tên đoàn</th>
+                    <th>Phương tiện di chuyển</th>
+                    <th></th>
+                </tr>
+                {{#each listPhuongTien}}
+                <tr class="row-khachhang">
+                    <td>{{this.MaDoan}}</td>
+                    <td>{{this.TenDoan}}</td>
+                    <td>{{this.PhuongTien}}</td>
+                    <td>
+                        <div class="container-icon-extend-option">
+                            <div class="icon-extend-option">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </div>
+                        </div>
                     </td>
                 </tr>
                 {{/each}}

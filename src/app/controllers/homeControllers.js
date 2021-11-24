@@ -7,6 +7,8 @@ const Tour = require('../models/Tour')
 const NhanVien = require('../models/NhanVien')
 const NhanVienTour = require('../models/NhanVienTour')
 const LoaiTour = require('../models/LoaiTour')
+const PhuongTien = require('../models/PhuongTien')
+const PhuongTienDoan = require('../models/PhuongTienDoan')
 let arrImg
 
 // import ApexCharts from 'apexcharts'
@@ -28,7 +30,7 @@ cloudinary.v2.api.resources({
 });
 
 class homeControllers {
-    signIn(req, res){
+    signIn(req, res) {
         res.render('signin')
     }
     //GET /
@@ -50,29 +52,47 @@ class homeControllers {
         Promise.all([findNhanVien, findNhanVienTour])
             .then(values => {
                 let [nhanviens, nhanvientours] = values
-                res.render('staffs',{
+                res.render('staffs', {
                     nhanviens,
                 })
-                
+
             })
     }
     // GET add new staff
-    addNewStaff(req, res){
-        res.render('staffs/addNewStaff',{
-            "MaNhanVien":"MNV6",
+    addNewStaff(req, res) {
+        res.render('staffs/addNewStaff', {
+            "MaNhanVien": "MNV6",
         })
     }
     showCustomers(req, res) {
-        let findDoanDuLich = DoanDuLich.find({}).lean()
-        let findKhachHang = KhachHang.find().lean()
-        Promise.all([findDoanDuLich, findKhachHang])
+        const findDoanDuLich = DoanDuLich.find().lean()
+        const findKhachHang = KhachHang.find().lean()
+        const findLichTrinh = LichTrinh.find().lean()
+        const findPhuongTien = PhuongTien.find().lean()
+        const findPhuongTienDoan = PhuongTienDoan.find().lean()
+
+        Promise.all([
+            findDoanDuLich,
+            findKhachHang,
+            findLichTrinh,
+            findPhuongTien,
+            findPhuongTienDoan
+        ])
             .then(values => {
-                let [doandulichs, khachhangs] = values
-                Promise.all([convertListOfNumberMemberEachDoanDuLich(doandulichs)])
-                    .then(listDoanDuLichAndMembers => {
+                let [doandulichs, khachhangs, lichtrinhs, phuongtiens, phuongtiendoans] = values
+                Promise.all([
+                    convertListOfNumberMemberEachDoanDuLich(doandulichs),
+                    getDestinationMoment(lichtrinhs, doandulichs),
+                    getPhuongTienDoanDuLich(doandulichs, phuongtiens, phuongtiendoans)
+                ])
+                    .then(value => {
+                        let [listDoanDuLichAndMembers, listDestination, listPhuongTien] = value
+                        console.log(listDestination)
                         res.render('customers', {
-                            "doandulichs": listDoanDuLichAndMembers[0],
-                            khachhangs
+                            "doandulichs": listDoanDuLichAndMembers,
+                            khachhangs,
+                            "destination": listDestination,
+                            listPhuongTien,
                         })
                     })
             })
@@ -242,7 +262,11 @@ class homeControllers {
         handleNhanVienAddDoanDuLich(totalNhanViens, MaDoan)
         let insertDoanDuLich = DoanDuLich.collection.insertOne(doandulichs)
         let insertKhachHang = KhachHang.collection.insertMany(khachhangs)
-        Promise.all([insertDoanDuLich, insertKhachHang])
+        let insertPhuongTienDoan = PhuongTienDoan.collection.insertOne({
+            MaDoan:req.body.MaDoan,
+            MaPhuongTien:req.body.PhuongTien
+        })
+        Promise.all([insertDoanDuLich, insertKhachHang,insertPhuongTienDoan])
             .then(() => {
                 res.redirect('/customers')
             })
@@ -264,17 +288,26 @@ class homeControllers {
     addDoanDuLich(req, res) {
         getLastMaDoan(function (MaDoan) {
             let findTour = Tour.find().lean()
+            let findPhuongTien = PhuongTien.find().lean()
             let findNhanVien = NhanVien.find({ ActiveTour: 'false' }).lean()
-            Promise.all([findNhanVien, findTour])
+            Promise.all([findNhanVien, findTour, findPhuongTien])
                 .then(values => {
-                    let [nhanviens, tours] = values
+                    let [nhanviens, tours, phuongtiens] = values
                     res.render('customers/addDoanDuLich', {
                         "MaDoan": MaDoan,
                         tours,
-                        nhanviens
+                        nhanviens,
+                        phuongtiens
                     })
                 })
         })
+    }
+    // POST
+    handleIncreateSoThuTuDiaDiemOfDoanDuLich(req, res) {
+        DoanDuLich.updateOne({ MaDoan: req.body.MaDoan }, { SoThuTuDiaDiem: req.body.SoThuTuDiaDiem })
+            .then(() => {
+                res.redirect('back')
+            })
     }
 }
 
@@ -297,29 +330,19 @@ async function tableStatisticsNhanVien(listNhanViens) {
         })
     return listNhanViens
 }
-function tableStatisticsTours(listMaTours) {
-    // let table = []
-    // await DoanDuLich.find().lean()
-    //     .then(doandulichs => {
-    //         for (let element of doandulichs) {
-    //             table.push({
-    //                 MaTour: element.MaTour,
-    //                 ChiPhi: element.ChiPhi
-    //             })
-    //         }
-    //     })
-    // console.log(table)
-    let demoData = [
-        { MaTour: 'MT1', ChiPhi: '13000000' },
-        { MaTour: 'MT1', ChiPhi: '12300' },
-        { MaTour: 'MT1', ChiPhi: '1356500' },
-        { MaTour: 'MT2', ChiPhi: '10000000' },
-        { MaTour: 'MT3', ChiPhi: '100000' },
-        { MaTour: 'MT4', ChiPhi: '19999' },
-        { MaTour: 'MT4', ChiPhi: '1999900' },
-        { MaTour: 'MT4', ChiPhi: '12345' },
-    ]
-    for (let element1 of demoData) {
+async function tableStatisticsTours(listMaTours) {
+    let table = []
+    await DoanDuLich.find().lean()
+        .then(doandulichs => {
+            for (let element of doandulichs) {
+                table.push({
+                    MaTour: element.MaTour,
+                    ChiPhi: element.ChiPhi
+                })
+            }
+        })
+    console.log(table)
+    for (let element1 of table) {
         for (let element2 of listMaTours) {
             if (element1.MaTour == element2.MaTour) {
                 element2.ChiPhi = parseInt(element2.ChiPhi) + parseInt(element1.ChiPhi)
@@ -342,7 +365,6 @@ async function convertListOfNumberMemberEachDoanDuLich(doandulichs) {
                 })
             })
     }
-    console.log(arr)
     return arr
 }
 function getLastMaTour(tours) {
@@ -458,6 +480,8 @@ function formatDataKhachHang(MaDoan, dataKhachHang) {
 }
 
 async function handleNhanVienAddDoanDuLich(arrMaNhanVien, MaDoan) {
+    if (arrMaNhanVien.length == 1 && arrMaNhanVien[0] == "")
+        return
     let arr = arrMaNhanVien[0].split(',')
     for (let i = 0; i < arr.length; ++i) {
         let MaNhanVien = arr[i]
@@ -469,4 +493,50 @@ async function handleNhanVienAddDoanDuLich(arrMaNhanVien, MaDoan) {
         })
             .then(() => console.log('success insert nhanvientours'))
     }
+}
+async function getDestinationMoment(lichtrinhs, doandulichs) {
+    let arr = []
+
+    for (let i = 0; i < doandulichs.length; ++i) {
+        if (doandulichs[i].CheckFinish == 'false') {
+            let destination = doandulichs[i].SoThuTuDiaDiem
+            let madoan = doandulichs[i].MaDoan
+            let matour = doandulichs[i].MaTour
+            let objLichTrinh = await lichtrinhs.filter(function (element, index) {
+                return element.MaTour == matour && element.SoThuTuDiaDiem == destination
+            })
+            let countDestination = await lichtrinhs.reduce(function (params, element) {
+                return (element.MaTour == matour) ? ++params : params
+            }, 0)
+
+            arr.push({
+                MaTour: matour,
+                MaDoan: doandulichs[i].MaDoan,
+                TenDoan: doandulichs[i].TenDoan,
+                SoThuTuDiaDiem: destination,
+                DiaDiem: objLichTrinh[0].NoiDung,
+                TongDiaDiem: countDestination,
+            })
+        }
+    }
+    return arr
+}
+async function getPhuongTienDoanDuLich(doandulichs, phuongtiens, phuongtiendoans) {
+    let arr = []
+
+    for (let i = 0; i < doandulichs.length; ++i) {
+        let madoan = doandulichs[i].MaDoan
+        let objMaPhuongTien = await phuongtiendoans.find(function (element) {
+            return element.MaDoan == madoan
+        })
+        let objTenPhuongTien = await phuongtiens.find(function (element) {
+            return element.MaPhuongTien == objMaPhuongTien.MaPhuongTien
+        })
+        arr.push({
+            MaDoan: doandulichs[i].MaDoan,
+            TenDoan: doandulichs[i].TenDoan,
+            PhuongTien: objTenPhuongTien.TenPhuongTien
+        })
+    }
+    return arr
 }
