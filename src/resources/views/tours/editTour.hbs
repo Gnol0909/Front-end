@@ -1,40 +1,48 @@
 <link rel="stylesheet" href="/css/detailTour.css">
-
+<link rel="stylesheet" href="/css/editTour.css">
 {{!-- source --}}
-<div style="margin: 10px;">
-    <table style="width:auto">
-        <tr>
-            <td id="border-icon-back-detail-tour">
-                <a href="/tours" style="text-decoration: none;">
-                    <i class="fas fa-arrow-circle-left icon-back-detail-tour"></i>
-                </a>
-            </td>
-            <td style="background-color: white;">
-                {{#each tours}}
-                <span class="title-detail-tour">Edit Tour : {{this.TenTour}}</span>
-                <span class="title-detail-tour timetour"> {{this.ThoiGianTour}} </span>
-                {{/each}}
-            </td>
-        </tr>
-    </table>
+  <div class="detailtour__header">
+    <div class="detailtour__header-back" id="border-icon-back-detail-tour">
+        <a href="/tours" class="detailtour__header-back-link">
+            <i class=" fas fa-chevron-left" ></i>
+        </a>
+    </div>
+     {{#each tours}}
+    <h3 class="detailtour__heading">Tour : {{this.TenTour}}</h3>
+    <span class="title-detail-tour timetour">( {{this.ThoiGianTour}} )</span>
+     {{/each}}
+</div>
+<div class="editTour-container">
     <form action="/handle/editTour" method="POST">
         {{#each tours}}
-        <label for="">Mã Tour</label>
-        <input type="text" name="MaTour" id="edit-tour-MaTour" readonly value="{{this.MaTour}}">
-        <label for="">Tên Tour</label>
-        <input type="text" name="TenTour" id="edit-tour-TenTour" value="{{this.TenTour}}">
-        <label for="">Mô tả</label>
-        <textarea name="MoTa" id="" cols="30" rows="10">{{this.MoTa}}</textarea>
+        <div class="info-top">
+            <div class="tour-code">
+                <label for="">Mã Tour</label>
+                <input type="text" name="MaTour" id="edit-tour-MaTour" readonly value="{{this.MaTour}}">
+            </div>
+            <div class="tour-name">
+                <label for="">Tên Tour</label>
+                <input type="text" name="TenTour" id="edit-tour-TenTour" value="{{this.TenTour}}">
+            </div>
+        </div>
+        <div class="info-bottom">
+            <label for="">Mô tả</label>
+            <textarea name="MoTa" id="" cols="500" rows="10">{{this.MoTa}}</textarea>
+        </div>
         {{/each}}
         {{!-- lịch trình --}}
         {{#each lichtrinhs}}
-        <div>
-            <label for="">Số thứ tự địa điểm {{this.SoThuTuDiaDiem}}</label>
-            <input type="text" name="{{this.SoThuTuDiaDiem}}-NgayGio"  value="{{this.NgayGio}}">
-            <textarea name="{{this.SoThuTuDiaDiem}}-NoiDung" id="" cols="30" rows="10">{{this.NoiDung}}</textarea>
+        <div class="info-detail">
+            <div class="info-detail-name">
+                <label for="">Số thứ tự địa điểm {{this.SoThuTuDiaDiem}}</label>
+                <input type="text" name="{{this.SoThuTuDiaDiem}}-NgayGio"  value="{{this.NgayGio}}">
+            </div>
+            <div class="info-detail-content">
+                <textarea name="{{this.SoThuTuDiaDiem}}-NoiDung" id="" cols="30" rows="5">{{this.NoiDung}}</textarea>
+            </div>
         </div>
         {{/each}}
-        <button>Lưu thay đổi</button>
+        <button class="btn-save">Lưu thay đổi</button>
     </form>
 </div>
 

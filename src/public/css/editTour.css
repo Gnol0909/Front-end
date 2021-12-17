@@ -1,0 +1,58 @@
+.editTour-container{
+    margin: 16px 32px
+}
+.info-top{
+    display: grid;
+    grid-template-columns: 30% 70%;
+}
+.tour-code{
+    margin-right: 32px;
+    display: flex;
+    align-items: center;
+}
+.info-detail-name,
+.tour-name{
+    display: flex;
+    align-items: center;
+}
+.info-detail-name label,
+.info-top label{
+    margin-right: 16px;
+}
+.info-detail-name input,
+.info-top input{
+    flex: 1;
+    padding: 8px 6px;
+    border: 1px solid #000;
+    border-radius: 3px;
+    outline: none;
+}
+.info-detail-content,
+.info-bottom{
+    margin-top: 24px;
+    display: flex;
+    flex-direction: column;
+}
+.info-detail-content textarea,
+.info-bottom textarea{
+    margin-top: 16px;
+    padding: 16px;
+    font-size: 14px;
+}
+.info-detail{
+    margin-top: 32px;
+    display: flex;
+    flex-direction: column;
+}
+.info-detail-name input{
+    flex: 1;
+    padding: 8px 6px;
+    border: 1px solid #000;
+    border-radius: 3px;
+    outline: none;
+}
+.btn-save{
+    margin-top: 32px;
+}
+
+
