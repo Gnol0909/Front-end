@@ -47,3 +47,17 @@
 .staff__container-list{
 
 }
+.span-checkactive-nhanvien{
+    color: white;
+    border-radius: 800px;
+    font-size: 10px;
+    font-weight: 700;
+    text-align: center;
+    padding: 3.78px 7.02px;
+}
+.span-checkactive-nhanvien.intour{
+    background-color: #dc3545;
+}
+.span-checkactive-nhanvien.enable{
+    background-color:#198754 ;
+}
